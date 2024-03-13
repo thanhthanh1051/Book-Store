@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ranks', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->nullable();
-            $table->integer('value');
-            $table->integer('discount');
-            $table->text('description')->nullable();
-            $table->timestamps();
+        Schema::table('discounts',function(Blueprint $table) {
+            $table
+            ->foreign('rank_id')
+            ->references('id')
+            ->on('ranks');
         });
     }
 
@@ -26,6 +24,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ranks');
+        Schema::table('discounts',function(Blueprint $table) {
+            $table->dropForeign('discounts_rank_id_foreign');
+        });
     }
 };
